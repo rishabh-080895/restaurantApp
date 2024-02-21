@@ -6,7 +6,6 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import {Api} from './src/api/api';
 import {BASE_URL} from './src/constant';
@@ -15,18 +14,23 @@ import {Header, StockCard, Footer} from './src/component';
 
 function App(): React.JSX.Element {
   const [portfolioData, setPortfolioData] = useState<StockData[] | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+
+  const fetchStockPortfolioData = async () => {
+    setIsRefreshing(true);
+    try {
+      const response: PortfolioResponse = await Api(BASE_URL);
+      setPortfolioData(response.userHolding);
+    } catch (error) {
+      console.error('Error fetching stock portfolio data:', error);
+    } finally {
+      setIsLoading(false);
+      setIsRefreshing(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchStockPortfolioData = async () => {
-      try {
-        const response: PortfolioResponse = await Api(BASE_URL);
-        setPortfolioData(response.userHolding);
-        setIsLoading(false);
-      } catch (error) {
-        console.error('Error fetching stock portfolio data:', error);
-      }
-    };
     fetchStockPortfolioData();
   }, []);
 
@@ -39,18 +43,18 @@ function App(): React.JSX.Element {
   }
 
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
-      <SafeAreaView style={{flex: 1}}>
-        <Header />
-        <FlatList
-          style={{flex: 1}}
-          data={portfolioData}
-          keyExtractor={(item, index) => `${item.symbol}-${index}`}
-          renderItem={({item}) => <StockCard item={item} />}
-        />
-        {portfolioData && <Footer userHoldings={portfolioData} />}
-      </SafeAreaView>
-    </GestureHandlerRootView>
+    <SafeAreaView style={{flex: 1}}>
+      <Header />
+      <FlatList
+        style={{flex: 1}}
+        data={portfolioData}
+        keyExtractor={(item, index) => `${item.symbol}-${index}`}
+        renderItem={({item}) => <StockCard item={item} />}
+        refreshing={isRefreshing}
+        onRefresh={fetchStockPortfolioData}
+      />
+      {portfolioData && <Footer userHoldings={portfolioData} />}
+    </SafeAreaView>
   );
 }
 
