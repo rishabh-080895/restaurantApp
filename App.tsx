@@ -6,11 +6,12 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import {Api} from './src/api/api';
 import {BASE_URL} from './src/constant';
 import {StockData, PortfolioResponse} from './src/type';
-import {Header, StockCard} from './src/component';
+import {Header, StockCard, Footer} from './src/component';
 
 function App(): React.JSX.Element {
   const [portfolioData, setPortfolioData] = useState<StockData[] | null>(null);
@@ -38,15 +39,18 @@ function App(): React.JSX.Element {
   }
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <Header />
-      <FlatList
-        style={{flex: 1}}
-        data={portfolioData}
-        keyExtractor={(item, index) => `${item.symbol}-${index}`}
-        renderItem={({item}) => <StockCard item={item} />}
-      />
-    </SafeAreaView>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1}}>
+        <Header />
+        <FlatList
+          style={{flex: 1}}
+          data={portfolioData}
+          keyExtractor={(item, index) => `${item.symbol}-${index}`}
+          renderItem={({item}) => <StockCard item={item} />}
+        />
+        <Footer userHoldings={portfolioData} />
+      </SafeAreaView>
+    </GestureHandlerRootView>
   );
 }
 
