@@ -1,14 +1,12 @@
-import React, {useCallback, useEffect, useRef} from 'react';
-import {View, Text} from 'react-native';
+import React from 'react';
 
-import {StyleSheet, TouchableOpacity} from 'react-native';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {StyleSheet} from 'react-native';
 import {BottomSheet} from './BottomSheet';
 
 import {StockData} from '../type';
 
 interface FooterProps {
-  userHoldings: StockData[] | null;
+  userHoldings: StockData[];
 }
 
 const Footer = ({userHoldings}: FooterProps) => {
@@ -22,10 +20,14 @@ const Footer = ({userHoldings}: FooterProps) => {
     holding => (holding.close - holding.ltp) * holding.quantity,
   );
 
-  const currentTotalValue =
-    currentValues?.reduce((acc, value) => acc + value, 0) ?? 0;
-  const totalInvestmentValue =
-    investmentValues?.reduce((acc, value) => acc + value, 0) ?? 0;
+  const currentTotalValue = currentValues?.reduce(
+    (acc, value) => acc + value,
+    0,
+  );
+  const totalInvestmentValue = investmentValues?.reduce(
+    (acc, value) => acc + value,
+    0,
+  );
 
   const totalPNL = currentTotalValue - totalInvestmentValue;
   const todaysTotalPNL = todaysPNLs?.reduce((acc, pnl) => acc + pnl, 0);
@@ -34,7 +36,7 @@ const Footer = ({userHoldings}: FooterProps) => {
     <BottomSheet
       currentTotalValue={currentTotalValue}
       totalInvestmentValue={totalInvestmentValue}
-      todaysTotalPNL={totalPNL}
+      todaysTotalPNL={todaysTotalPNL}
       totalPNL={totalPNL}
     />
   );

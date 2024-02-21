@@ -48,7 +48,7 @@ function App(): React.JSX.Element {
           keyExtractor={(item, index) => `${item.symbol}-${index}`}
           renderItem={({item}) => <StockCard item={item} />}
         />
-        <Footer userHoldings={portfolioData} />
+        {portfolioData && <Footer userHoldings={portfolioData} />}
       </SafeAreaView>
     </GestureHandlerRootView>
   );
