@@ -9,3 +9,10 @@ export interface StockData {
 export interface PortfolioResponse {
   userHolding: StockData[];
 }
+
+export interface IFooter {
+  currentTotalValue: number;
+  totalInvestmentValue: number;
+  todaysTotalPNL: number;
+  totalPNL: number;
+}
