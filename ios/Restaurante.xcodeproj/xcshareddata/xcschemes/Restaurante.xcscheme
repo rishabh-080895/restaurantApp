@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "upstox.app"
-               BlueprintName = "upstox"
-               ReferencedContainer = "container:upstox.xcodeproj">
+               BuildableName = "Restaurante.app"
+               BlueprintName = "Restaurante"
+               ReferencedContainer = "container:Restaurante.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "upstoxTests.xctest"
-               BlueprintName = "upstoxTests"
-               ReferencedContainer = "container:upstox.xcodeproj">
+               BuildableName = "RestauranteTests.xctest"
+               BlueprintName = "RestauranteTests"
+               ReferencedContainer = "container:Restaurante.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "upstox.app"
-            BlueprintName = "upstox"
-            ReferencedContainer = "container:upstox.xcodeproj">
+            BuildableName = "Restaurante.app"
+            BlueprintName = "Restaurante"
+            ReferencedContainer = "container:Restaurante.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "upstox.app"
-            BlueprintName = "upstox"
-            ReferencedContainer = "container:upstox.xcodeproj">
+            BuildableName = "Restaurante.app"
+            BlueprintName = "Restaurante"
+            ReferencedContainer = "container:Restaurante.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

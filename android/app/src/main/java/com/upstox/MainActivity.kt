@@ -1,4 +1,4 @@
-package com.upstox
+package com.Restaurante
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

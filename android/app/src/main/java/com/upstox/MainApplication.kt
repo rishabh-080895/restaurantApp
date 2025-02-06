@@ -1,4 +1,4 @@
-package com.upstox
+package com.Restaurante
 
 import android.app.Application
 import com.facebook.react.PackageList
