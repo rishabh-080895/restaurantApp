@@ -7,20 +7,29 @@ import {
   Pressable,
   Image,
   Alert,
+  ImageBackground,
 } from 'react-native';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {menuItems} from '../constant/listingData';
+import {menuItems, restaurantData} from '../constant/listingData';
 import MenuItem from './MenuItem';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useCallback, useEffect, useState} from 'react';
 import {isValueNullOrEmpty} from '../../helper';
 
 const RestaurantDetails = ({route}) => {
-  const details = route?.params?.item;
+  const restaurantId = route?.params?.restaurantId;
   const navigation = useNavigation();
   const {width} = useWindowDimensions();
   const [cart, setCart] = useState({});
+  const [details, setDetails] = useState(null);
+
+  useEffect(() => {
+    const getRestaurantDetails = restaurantData?.find(
+      i => i?._id === restaurantId,
+    );
+    setDetails(getRestaurantDetails);
+  }, []);
 
   const getCart = async () => {
     try {
@@ -41,7 +50,6 @@ const RestaurantDetails = ({route}) => {
 
   const addItemFunction = async item => {
     const itemId = item?._id;
-    const restaurantId = details?._id;
     let cartObj = {};
     if (isValueNullOrEmpty(cart?.restaurantId)) {
       const finalItem = {...item, quantity: 1};
@@ -108,7 +116,6 @@ const RestaurantDetails = ({route}) => {
 
   const onRemoveItem = async item => {
     const itemId = item?._id;
-    const restaurantId = details?._id;
     let cartObj = {};
     cartObj = {...cart};
     if (cartObj?.restaurantId === restaurantId) {
@@ -178,14 +185,34 @@ const RestaurantDetails = ({route}) => {
         </Pressable>
       ) : null}
       <ScrollView>
-        <Image
+        <ImageBackground
           source={details?.image}
           style={{
             width: width,
             height: 300,
             overflow: 'hidden',
-          }}
-        />
+          }}>
+          <View style={style.ratingBox}>
+            <View style={style.eachBox}>
+              <Text
+                style={[style.subText, {color: '#fff', fontWeight: 'bold'}]}>
+                {details?.rating}
+              </Text>
+              <Icon
+                name="star"
+                size={12}
+                color="#fff"
+                style={{paddingLeft: 2, top: 2}}
+              />
+            </View>
+            <View style={style.bottomBox}>
+              <Text style={[style.subText2, {fontWeight: '500', fontSize: 12}]}>
+                {details?.reviews}
+              </Text>
+              <Text style={style.subText2}>Reviews</Text>
+            </View>
+          </View>
+        </ImageBackground>
         <View style={style.content}>
           <Text style={style.text}>{details?.name}</Text>
           <Text style={style.subText}>{details?.description}</Text>
@@ -258,6 +285,33 @@ const style = StyleSheet.create({
   carttext: {
     color: '#000',
     fontSize: 12,
+  },
+  ratingBox: {
+    width: 60,
+    height: 68,
+    backgroundColor: '#0c4703',
+    borderRadius: 12,
+    position: 'absolute',
+    bottom: 16,
+    right: 16,
+    overflow: 'hidden',
+  },
+  eachBox: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  subText2: {
+    color: '#ffffff',
+    fontSize: 10,
+  },
+  bottomBox: {
+    backgroundColor: '#000',
+    flexDirection: 'column',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

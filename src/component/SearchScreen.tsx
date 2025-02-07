@@ -42,7 +42,9 @@ const SearchScreen = () => {
           renderItem={({item}) => (
             <RestaurantCard
               data={item}
-              openDetails={() => navigation.navigate('details', {item})}
+              openDetails={() =>
+                navigation.navigate('details', {restaurantId: item?._id})
+              }
             />
           )}
           contentContainerStyle={{paddingHorizontal: 16}}

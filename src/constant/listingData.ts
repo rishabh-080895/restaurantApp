@@ -7,7 +7,8 @@ export const restaurantData = [
         "popular": false,
 		"location": 'Spain',
 		"_id": 1,
-		"rating": '4.9'
+		"rating": '4.9',
+		"reviews": 80,
 	},
     {
 		"name": "Per Se New York",
@@ -19,6 +20,7 @@ export const restaurantData = [
 		"_id": 2,
 		"rating": '4.9',
 		"spotlight": 'Menu under $200',
+		"reviews": 120,
 	},
     {
 		"name": "Kyo Aji, Tokyo",
@@ -30,6 +32,7 @@ export const restaurantData = [
 		"_id": 4,
 		"rating": '4.5',
 		"spotlight": 'Best in ambience',
+		"reviews": 90,
 	},
 	{
 		"name": "Per Savoy, Paris",
@@ -41,6 +44,7 @@ export const restaurantData = [
 		"_id": 3,
 		"rating": '4.2',
 		"spotlight": 'Popular right now',
+		"reviews": 280,
 	},
     {
 		"name": "Masa New York",
@@ -50,7 +54,8 @@ export const restaurantData = [
         "popular": false,
 		"location": 'USA',
 		"_id": 5,
-		"rating": '4.1'
+		"rating": '4.1',
+		"reviews": 60,
 	},
     {
 		"name": "Ultraviolet By Paul Pairet",
@@ -60,7 +65,8 @@ export const restaurantData = [
         "popular": false,
 		"location": 'China',
 		"_id": 6,
-		"rating": '4.6'
+		"rating": '4.6',
+		"reviews": 90,
 	}
 ];
 

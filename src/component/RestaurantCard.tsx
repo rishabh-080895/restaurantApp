@@ -44,7 +44,8 @@ const RestaurantCard = ({data, openDetails = () => {}}) => {
                 <Text style={style.subText}>{data?.location}</Text>
               </View>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={[style.subText, {color: 'green'}]}>
+                <Text
+                  style={[style.subText, {color: 'green', fontWeight: 'bold'}]}>
                   {data?.rating}
                 </Text>
                 <Icon
@@ -125,7 +126,8 @@ const style = StyleSheet.create({
     top: 0,
     right: 0,
     backgroundColor: '#fff',
-    width: 60,
+    width: 64,
+    paddingVertical: 2,
     borderBottomLeftRadius: 8,
     alignItems: 'center',
   },

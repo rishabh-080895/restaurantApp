@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   useWindowDimensions,
   Image,
+  Pressable,
 } from 'react-native';
 import Header from './Header';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
@@ -17,11 +18,14 @@ import {isValueNullOrEmpty} from '../../helper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Cart = ({route}) => {
-  const restaurantId = route?.params?.restaurantId;
+  const source = route?.params?.source;
   const navigation = useNavigation();
   const [cart, setCart] = useState({});
   const {width} = useWindowDimensions();
   const [showSuccess, setShowSuccess] = useState(false);
+  const [restaurantId, setRestaurantId] = useState(
+    route?.params?.restaurantId ?? '',
+  );
 
   const getCart = async () => {
     try {
@@ -29,6 +33,9 @@ const Cart = ({route}) => {
       if (value !== null) {
         const parsedCart = JSON.parse(value);
         setCart(parsedCart);
+        if (source === 'home' && isValueNullOrEmpty(restaurantId)) {
+          setRestaurantId(parsedCart?.restaurantId);
+        }
         if (parsedCart?.items?.length) {
           calculateTotal();
         }
@@ -70,25 +77,21 @@ const Cart = ({route}) => {
     } else {
       cartObj = {...cart};
       if (cartObj?.restaurantId === restaurantId) {
-        const checkItemExist = cartObj?.items?.find(i => i?._id === itemId);
-        if (checkItemExist) {
-          const filteredItems = cartObj?.items?.filter(i => i?._id !== itemId);
-          const existingItem = {...checkItemExist};
-          existingItem.quantity += 1;
-
-          cartObj.items = [...filteredItems];
-          cartObj.items.push(existingItem);
-
-          AsyncStorage.setItem('CART', JSON.stringify(cartObj), () => {
-            setCart(cartObj);
-          });
-        } else {
-          const CurItem = {...item, quantity: 1};
-          cartObj.items.push(CurItem);
-          AsyncStorage.setItem('CART', JSON.stringify(cartObj), () => {
-            setCart(cartObj);
-          });
+        const itemsArr = [...cartObj?.items];
+        const modifiedArr = [];
+        for (let i = 0; i < itemsArr?.length; i++) {
+          if (itemsArr?.[i]?._id === itemId) {
+            const existingItem = {...itemsArr?.[i]};
+            existingItem.quantity += 1;
+            modifiedArr.push(existingItem);
+          } else {
+            modifiedArr.push(itemsArr?.[i]);
+          }
         }
+        cartObj.items = [...modifiedArr];
+        AsyncStorage.setItem('CART', JSON.stringify(cartObj), () => {
+          setCart(cartObj);
+        });
       } else {
         Alert.alert(
           'Are you sure',
@@ -126,22 +129,23 @@ const Cart = ({route}) => {
     let cartObj = {};
     cartObj = {...cart};
     if (cartObj?.restaurantId === restaurantId) {
-      const checkItemExist = cartObj?.items?.find(i => i?._id === itemId);
-      if (checkItemExist) {
-        const filteredItems = cartObj?.items?.filter(i => i?._id !== itemId);
-        const existingItem = {...checkItemExist};
-
-        existingItem.quantity -= 1;
-
-        cartObj.items = [...filteredItems];
-        if (existingItem?.quantity > 0) {
-          cartObj.items.push(existingItem);
+      const itemsArr = [...cartObj?.items];
+      const modifiedArr = [];
+      for (let i = 0; i < itemsArr?.length; i++) {
+        if (itemsArr?.[i]?._id === itemId) {
+          const existingItem = {...itemsArr?.[i]};
+          existingItem.quantity -= 1;
+          if (existingItem?.quantity > 0) {
+            modifiedArr.push(existingItem);
+          }
+        } else {
+          modifiedArr.push(itemsArr?.[i]);
         }
-
-        AsyncStorage.setItem('CART', JSON.stringify(cartObj), () => {
-          setCart(cartObj);
-        });
       }
+      cartObj.items = [...modifiedArr];
+      AsyncStorage.setItem('CART', JSON.stringify(cartObj), () => {
+        setCart(cartObj);
+      });
     }
   };
 
@@ -191,7 +195,21 @@ const Cart = ({route}) => {
           />
         )}
         contentContainerStyle={{paddingHorizontal: 16}}
-        ListFooterComponent={<View style={{height: 100}} />}
+        ListFooterComponent={
+          <View style={{paddingBottom: 100}}>
+            <Pressable
+              style={style.addMoreBtn}
+              onPress={() => navigation.navigate('details', {restaurantId})}>
+              <Icon
+                name="plus"
+                size={16}
+                color="#fff"
+                style={{paddingRight: 6}}
+              />
+              <Text style={style.addMoreText}>Add more items</Text>
+            </Pressable>
+          </View>
+        }
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <View
@@ -246,8 +264,8 @@ const style = StyleSheet.create({
   },
   btnText2: {
     color: '#000',
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontWeight: '500',
     letterSpacing: 1,
   },
   addBtn: {
@@ -268,7 +286,7 @@ const style = StyleSheet.create({
     backgroundColor: '#fff',
   },
   orderBar: {
-    height: 60,
+    height: 64,
     paddingHorizontal: 16,
     position: 'absolute',
     bottom: 0,
@@ -287,6 +305,20 @@ const style = StyleSheet.create({
     fontSize: 20,
     fontWeight: '500',
     marginTop: 4,
+  },
+  addMoreText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '500',
+    paddingRight: 6,
+    textAlign: 'center',
+  },
+  addMoreBtn: {
+    marginTop: 24,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingVertical: 20,
   },
 });
 
