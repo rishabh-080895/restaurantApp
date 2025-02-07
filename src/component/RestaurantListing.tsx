@@ -88,7 +88,7 @@ const RestaurantListing = () => {
             />
           </View>
         )}
-        ListFooterComponent={<View style={{height: 100}} />}
+        ListFooterComponent={<View style={{height: 160}} />}
         ListHeaderComponent={<BannerSection />}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
