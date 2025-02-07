@@ -197,17 +197,19 @@ const Cart = ({route}) => {
         contentContainerStyle={{paddingHorizontal: 16}}
         ListFooterComponent={
           <View style={{paddingBottom: 100}}>
-            <Pressable
-              style={style.addMoreBtn}
-              onPress={() => navigation.navigate('details', {restaurantId})}>
-              <Icon
-                name="plus"
-                size={16}
-                color="#fff"
-                style={{paddingRight: 6}}
-              />
-              <Text style={style.addMoreText}>Add more items</Text>
-            </Pressable>
+            {cart?.items?.length ? (
+              <Pressable
+                style={style.addMoreBtn}
+                onPress={() => navigation.navigate('details', {restaurantId})}>
+                <Icon
+                  name="plus"
+                  size={16}
+                  color="#fff"
+                  style={{paddingRight: 6}}
+                />
+                <Text style={style.addMoreText}>Add more items</Text>
+              </Pressable>
+            ) : null}
           </View>
         }
         showsVerticalScrollIndicator={false}
